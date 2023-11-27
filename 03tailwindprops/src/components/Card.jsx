@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Card(props,username,btnText="Visit Me") {
+function Card(props, username, btnText="Visit Me") {
     console.log(username);
   return (
     <div>
