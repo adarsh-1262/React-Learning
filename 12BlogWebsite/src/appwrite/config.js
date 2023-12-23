@@ -1,12 +1,12 @@
-import conf from "../conf/conf";
+import conf from '../conf/conf.js';
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service{
     client = new Client();
     databases;
     bucket;
-
-    constructor() {
+    
+    constructor(){
         this.client
         .setEndpoint(conf.appwriteUrl)
         .setProject(conf.appwriteProjectId);
@@ -14,12 +14,12 @@ export class Service{
         this.bucket = new Storage(this.client);
     }
 
-    async createPost({title, slug, content, featuredImage, status, userId}) {
+    async createPost({title, slug, content, featuredImage, status, userId}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                slug, // we can also use id.unique() in place of slug
+                slug,
                 {
                     title,
                     content,
@@ -29,11 +29,11 @@ export class Service{
                 }
             )
         } catch (error) {
-            console.log("Appwrite service :: createPost :: error", error);
+            console.log("Appwrite serive :: createPost :: error", error);
         }
     }
 
-    async updatePost(slug, {title, content, featuredImage, status}) {
+    async updatePost(slug, {title, content, featuredImage, status}){
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
@@ -44,24 +44,26 @@ export class Service{
                     content,
                     featuredImage,
                     status,
+
                 }
             )
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
+            console.log("Appwrite serive :: updatePost :: error", error);
         }
     }
 
-    async deletePost(slug) {
+    async deletePost(slug){
         try {
             await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                slug,
+                slug
+            
             )
-            return true;
+            return true
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
-            return false;
+            console.log("Appwrite serive :: deletePost :: error", error);
+            return false
         }
     }
 
@@ -71,10 +73,11 @@ export class Service{
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
+            
             )
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
-            return false;
+            console.log("Appwrite serive :: getPost :: error", error);
+            return false
         }
     }
 
@@ -84,16 +87,18 @@ export class Service{
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries,
+                
+
             )
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error); 
-            return false;
+            console.log("Appwrite serive :: getPosts :: error", error);
+            return false
         }
     }
 
     // file upload service
 
-    async uploadFile(file) {
+    async uploadFile(file){
         try {
             return await this.bucket.createFile(
                 conf.appwriteBucketId,
@@ -101,8 +106,8 @@ export class Service{
                 file
             )
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
-            return false;
+            console.log("Appwrite serive :: uploadFile :: error", error);
+            return false
         }
     }
 
@@ -112,21 +117,21 @@ export class Service{
                 conf.appwriteBucketId,
                 fileId
             )
-            return true;
+            return true
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
-            return false;
+            console.log("Appwrite serive :: deleteFile :: error", error);
+            return false
         }
     }
 
-    getFilePreview(fileId) {
+    getFilePreview(fileId){
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId
         )
     }
-
 }
 
-const service = new Service();
-export default service;
+
+const service = new Service()
+export default service
